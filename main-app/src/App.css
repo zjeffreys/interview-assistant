@@ -1,0 +1,83 @@
+.App {
+  text-align: center;
+  background: linear-gradient(to bottom, #000428, #004e92);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-family: 'Arial', sans-serif;
+}
+
+.hero-section, .content-section {
+  margin-bottom: 50px;
+}
+
+.hero-section h1, .content-section h2 {
+  font-size: 2em;
+  margin-bottom: 10px;
+}
+
+.hero-section p, .content-section p {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+  max-width: 600px;
+  text-align: center;
+}
+
+.button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #282c34;
+  color: white;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #3e4451;
+}
+
+.button:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+}
+
+.summary-section, .customer-management-section {
+  /* width: 80%; */
+  margin-top: 30px;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+audio { 
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+textarea {
+  width: 100%; /* Adjust width as needed */
+  height: 150px; /* Adjust height as needed */
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #282c34; /* Border color similar to button background */
+  border-radius: 5px; /* Rounded corners */
+  background-color: rgb(255, 255, 255); /* Translucent white background */
+  font-family: 'Arial', sans-serif; /* Consistent font style */
+  font-size: 1em;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Box shadow similar to other sections */
+  resize: vertical; /* Allow vertical resizing only */
+}
+
+textarea::placeholder {
+  color: #bbb; /* Lighter color for placeholder text */
+}
+
+textarea:focus {
+  outline: none; /* Remove default focus outline */
+  border: 1px solid #004e92; /* Highlight border color on focus */
+}
