@@ -1,0 +1,87 @@
+/* Summary.css */
+.interview-summaries {
+    /* background-color: black; */
+    padding: 10px;
+    text-align: left;
+    max-width: 100%;
+}
+
+.summary-table {
+    max-height: 100px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+audio{
+    height: 30px;
+}
+.interview-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
+    height: 32px;
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #007bff;
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+.icon-button:hover {
+    color: #0056b3;
+}
+.button{
+    margin-top: 10px;
+    width: 100%;
+}
+/* Summary.css */
+.ai-summary {
+    margin-top: 20px;
+}
+
+.save-results-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.save-results-button:hover {
+    background-color: #0056b3;
+}
+
+/* Summary.css */
+.interview-summaries {
+    max-width: 100%;
+}
+
+.summary-table {
+    max-height: 100px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.interview-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+   
+}

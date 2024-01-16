@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import './Demo.css';
 import testData from './testing.json'
 import InterviewQuestions from './InterviewQuestions';
-import Recording from './Recording';
-
+import ParentComponent from './ParentComponent';
 
 function Demo() {
   const [interviewInfo, setInterviewInfo] = useState('');
@@ -56,7 +55,8 @@ function Demo() {
         // </div>
       )}
 
-        <Recording></Recording>
+        {/* <Recording></Recording> */}
+        <ParentComponent></ParentComponent>
       
     </div>
   );
