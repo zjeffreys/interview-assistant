@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './Demo.css';
 import testData from './testing.json'
 import InterviewQuestions from './InterviewQuestions';
+import Recording from './Recording';
 
 
 function Demo() {
@@ -55,14 +56,8 @@ function Demo() {
         // </div>
       )}
 
-      <div className="recording-section">
-        <h2>Interview Recording</h2>
-        <button className="button">Start Recording</button>
-        <div className="interview-summary">
-          <h3>Interview Summary</h3>
-          {/* Add components or content for the interview summary here */}
-        </div>
-      </div>
+        <Recording></Recording>
+      
     </div>
   );
 }
