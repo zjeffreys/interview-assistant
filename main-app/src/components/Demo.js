@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import './Demo.css';
+import testData from './testing.json'
+import InterviewQuestions from './InterviewQuestions';
+
 
 function Demo() {
   const [interviewInfo, setInterviewInfo] = useState('');
@@ -43,12 +46,13 @@ function Demo() {
       )}
 
       {questions && ( // Render this section only if questions are not empty
-        <div className="output-section">
-          <h2>Generated Interview Questions</h2>
-          <div className="questions">
-            <pre>{questions}</pre>
-          </div>
-        </div>
+        <InterviewQuestions></InterviewQuestions>
+        // <div className="output-section">
+        //   <h2>Generated Interview Questions</h2>
+        //   <div className="questions">
+        //     <pre>{questions}</pre>
+        //   </div>
+        // </div>
       )}
 
       <div className="recording-section">
