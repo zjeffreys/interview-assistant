@@ -1,24 +1,32 @@
 import React, { useState } from 'react';
-import { FaUserAlt, FaTasks, FaQuestionCircle, FaLightbulb } from 'react-icons/fa';
+import { FaUserAlt, FaTasks, FaQuestionCircle, FaLightbulb, FaSpinner } from 'react-icons/fa';
 import './Summary.css';
 import summaryData from './summary.json';
 
-const Summary = ({ onFetchRecordings }) => {
+const Summary = () => {
     const [showSummary, setShowSummary] = useState(false);
+    const [loading, setLoading] = useState(false);
 
-    const toggleSummary = () => {
-        setShowSummary(!showSummary);
+    const handleSummarizeClick = () => {
+        setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+            setShowSummary(true);
+        }, 3000); // 3 seconds delay
     };
 
     return (
         <div className="interview-summaries">
             <h3 style={{ textAlign: 'center' }}>Interview Summary</h3>
-            {/* <button onClick={onFetchRecordings}>Process Recordings</button> */}
-            <button onClick={toggleSummary} style={{ display: 'block', margin: '10px auto' }}>
-                {showSummary ? 'Hide Summary' : 'Summarize With AI'}
-            </button>
+            {!showSummary && (
+                <button onClick={handleSummarizeClick} style={{ display: 'block', margin: '10px auto' }}>
+                    Summarize With AI
+                </button>
+            )}
 
-            {showSummary && (
+            {loading && <FaSpinner className="spinner" />}
+
+            {!loading && showSummary && (
                 <>
                     <div className="summary-section">
                         <FaUserAlt className="icon" />
@@ -66,6 +74,9 @@ const Summary = ({ onFetchRecordings }) => {
                     </div>
 
                     <p style={{ textAlign: 'center' }}><strong>Attitude Towards Innovation:</strong> {summaryData.customer_insights.attitude_towards_innovation}</p>
+                    <button>Email Results</button>
+                    <button>Save</button>
+
                 </>
             )}
         </div>

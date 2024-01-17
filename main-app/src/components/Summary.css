@@ -41,3 +41,14 @@
     margin-bottom: 5px;
     border-radius: 4
 }
+.spinner {
+    display: block;
+    margin: 20px auto;
+    font-size: 30px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
