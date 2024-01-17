@@ -1,3 +1,4 @@
+/* Summary.css */
 .interview-summaries {
     font-family: Arial, sans-serif;
     color: #fff;
@@ -12,7 +13,6 @@
     border-radius: 8px;
     margin-bottom: 10px;
     display: flex;
-    align-items: center;
     text-align: left;
 }
 
@@ -33,14 +33,17 @@
 .summary-section ul {
     list-style-type: none;
     padding: 0;
+    max-height: 200px; /* Maximum height set for the list */
+    overflow-y: auto; /* Enable vertical scrolling for the list */
 }
 
 .summary-section ul li {
     background-color: #606060;
     padding: 8px;
     margin-bottom: 5px;
-    border-radius: 4
+    border-radius: 4px;
 }
+
 .spinner {
     display: block;
     margin: 20px auto;
