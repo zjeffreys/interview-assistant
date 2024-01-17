@@ -1,4 +1,3 @@
-
 .recording-section {
   padding: 20px;
   background-color: #1a1a1a; 
@@ -9,54 +8,44 @@
 .recording-controls {
   display: flex;
   align-items: center;
+  margin-bottom: 10px;
 }
 
-.recording-section .button {
-  /* padding: 10px; */
+.recordings-table {
+  max-height: 100px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+.recording-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+}
+
+.recording-row span {
+  margin-left: auto; /* Push the span to the right */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-right: 5px;
+}
+
+.recording-section audio {
+  height: 30px;
+  width: 100px;
+  margin:0;
+}
+
+.delete-button {
+  background: none;
   border: none;
-  /* background-color: #4CAF50; */
-  /* border-radius: 50%; */
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  /* transition: background-color 0.3s; */
-}
-
-.recording-section .microphone-icon {
-  color: grey;
-  font-size: 24px;
-}
-
-.recording-section .animation-container {
-  width: 50px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.recording-section .recording-text {
-  margin-left: 10px;
-  color: white;
-  font-size: 16px;
-}
-
-.recording-section .timer {
   color: #fff;
-  margin-left: 10px;
-  font-size: 16px;
-}
-
-.recording-section .interview-summaries {
-  margin-top: 20px;
-}
-
-.interview-summary {
-  background-color: #262626;
-  padding: 10px;
-  margin-top: 10px;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-  border-left: 4px solid #4CAF50;
+  cursor: pointer;
+  padding: 0;
+  margin-left: 5px;
+  display: flex;
+  align-items: center;
+  width: 40px !important; /* Fixed width for the delete button */
 }

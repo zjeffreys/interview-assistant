@@ -1,23 +1,23 @@
-// ParentComponent.js
 import React, { useState } from 'react';
 import Recording from './Recording';
-import Summary from './Summary'; // Renamed component
+import Summary from './Summary';
 
 const ParentComponent = () => {
     const [recordings, setRecordings] = useState([]);
+    const [finalRecordings, setFinalRecordings] = useState([]);
 
-    const handleStopRecording = (audioData) => {
-        setRecordings(prevRecordings => [...prevRecordings, audioData]);
+    const getRecordingsFromRecordingComponent = (currentRecordings) => {
+        setRecordings(currentRecordings);
     };
 
-    const handleDeleteRecording = (index) => {
-        setRecordings(prevRecordings => prevRecordings.filter((_, i) => i !== index));
+    const handleProcessRecordings = () => {
+        setFinalRecordings(recordings);
     };
 
     return (
         <div>
-            <Recording onStopRecording={handleStopRecording} />
-            <Summary recordings={recordings} onDeleteRecording={handleDeleteRecording} /> {/* Renamed component */}
+            <Recording getRecordings={getRecordingsFromRecordingComponent} />
+            <Summary recordings={finalRecordings} onFetchRecordings={handleProcessRecordings} />
         </div>
     );
 };

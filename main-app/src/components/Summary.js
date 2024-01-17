@@ -1,67 +1,72 @@
 import React, { useState } from 'react';
-import { FaShareSquare, FaBrain } from 'react-icons/fa';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { FaUserAlt, FaTasks, FaQuestionCircle, FaLightbulb } from 'react-icons/fa';
 import './Summary.css';
+import summaryData from './summary.json';
 
-const Summary = ({ recordings, onDeleteRecording }) => {
-    const [showAISummary, setShowAISummary] = useState(false);
+const Summary = ({ onFetchRecordings }) => {
+    const [showSummary, setShowSummary] = useState(false);
 
-    const data = [
-        { name: 'Topic A', value: 400 },
-        { name: 'Topic B', value: 300 },
-        { name: 'Topic C', value: 300 },
-        { name: 'Topic D', value: 200 },
-    ];
-
-    const handleSummarize = () => {
-        setShowAISummary(true);
+    const toggleSummary = () => {
+        setShowSummary(!showSummary);
     };
 
     return (
         <div className="interview-summaries">
-            <h3>Recordings</h3>
-            <div className="summary-table">
-                {recordings.map((recording, index) => {
-                    const audioUrl = recording.data ? URL.createObjectURL(recording.data) : null;
+            <h3 style={{ textAlign: 'center' }}>Interview Summary</h3>
+            {/* <button onClick={onFetchRecordings}>Process Recordings</button> */}
+            <button onClick={toggleSummary} style={{ display: 'block', margin: '10px auto' }}>
+                {showSummary ? 'Hide Summary' : 'Summarize With AI'}
+            </button>
 
-                    return (
-                        <div key={index} className="interview-summary">
-                            <p><strong>Timestamp:</strong> {recording.timestamp}</p>
-                            {audioUrl && (
-                                <>
-                                    <audio controls>
-                                        <source src={audioUrl} type="audio/webm" />
-                                        Your browser does not support the audio element.
-                                    </audio>
-                                    <a href={audioUrl} download={`Recording-${recording.timestamp}.webm`} className="icon-button">
-                                        <FaShareSquare />
-                                    </a>
-                                    <button onClick={() => onDeleteRecording(index)} className="icon-button">
-                                        <FaBrain />
-                                    </button>
-                                </>
-                            )}
+            {showSummary && (
+                <>
+                    <div className="summary-section">
+                        <FaUserAlt className="icon" />
+                        <div className="section-content">
+                            <h4>{summaryData.persona_summary.name}</h4>
+                            <p>Profession: {summaryData.persona_summary.profession}</p>
+                            <p>Experience: {summaryData.persona_summary.experience}</p>
                         </div>
-                    );
-                })}
-            </div>
-            {recordings.length > 0 && (
-                <button className="summarize-button button" onClick={handleSummarize}>Summarize Interview</button>
-            )}
-            {showAISummary && (
-                <div className="ai-summary">
-                    <h4>AI Summary of the Interview</h4>
-                    <p>Here's a summary of the key points and data from the interview:</p>
-                    {/* <BarChart width={600} height={300} data={data}>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" />
-                        <YAxis />
-                        <Tooltip />
-                        <Legend />
-                        <Bar dataKey="value" fill="#8884d8" />
-                    </BarChart> */}
-                    <button className="save-results-button">Save Results</button>
-                </div>
+                    </div>
+
+                    <div className="summary-section">
+                        <FaTasks className="icon" />
+                        <div className="section-content">
+                            <h5>Main Responsibilities</h5>
+                            <ul>
+                                {summaryData.persona_summary.responsibilities.map((item, index) => (
+                                    <li key={index}>{item}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div className="summary-section">
+                        <FaQuestionCircle className="icon" />
+                        <div className="section-content">
+                            <h5>Challenges</h5>
+                            <ul>
+                                {summaryData.customer_insights.challenges.map((challenge, index) => (
+                                    <li key={index}>{challenge}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div className="summary-section">
+                        <FaLightbulb className="icon" />
+                        <div className="section-content">
+                            <h5>Potential AI Benefits</h5>
+                            <ul>
+                                {summaryData.customer_insights.potential_ai_benefits.map((benefit, index) => (
+                                    <li key={index}>{benefit}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <p style={{ textAlign: 'center' }}><strong>Attitude Towards Innovation:</strong> {summaryData.customer_insights.attitude_towards_innovation}</p>
+                </>
             )}
         </div>
     );

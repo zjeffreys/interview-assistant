@@ -1,87 +1,43 @@
-/* Summary.css */
 .interview-summaries {
-    /* background-color: black; */
+    font-family: Arial, sans-serif;
+    color: #fff;
+    background-color: #1a1a1a;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.summary-section {
+    background-color: #505050;
     padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
     text-align: left;
-    max-width: 100%;
 }
 
-.summary-table {
-    max-height: 100px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-}
-audio{
-    height: 30px;
-}
-.interview-summary {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 5px;
-    border-bottom: 1px solid #ccc;
-    height: 32px;
+.summary-section .section-content {
+    flex-grow: 1;
 }
 
-.icon-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #007bff;
-    font-size: 20px;
-    margin-left: 10px;
+.summary-section h4, .summary-section h5 {
+    margin: 0;
+    text-align: center;
 }
 
-.icon-button:hover {
-    color: #0056b3;
-}
-.button{
-    margin-top: 10px;
-    width: 100%;
-}
-/* Summary.css */
-.ai-summary {
-    margin-top: 20px;
+.icon {
+    font-size: 30px;
+    margin-right: 15px;
 }
 
-.save-results-button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
+.summary-section ul {
+    list-style-type: none;
+    padding: 0;
 }
 
-.save-results-button:hover {
-    background-color: #0056b3;
-}
-
-/* Summary.css */
-.interview-summaries {
-    max-width: 100%;
-}
-
-.summary-table {
-    max-height: 100px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-}
-
-.interview-summary {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
-}
-
-.icon-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-   
+.summary-section ul li {
+    background-color: #606060;
+    padding: 8px;
+    margin-bottom: 5px;
+    border-radius: 4
 }

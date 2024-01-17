@@ -36,26 +36,14 @@ function Demo() {
 
             {/* Add more options as needed */}
         </select>
-          <textarea
-            value={interviewInfo}
-            onChange={handleInputChange}
-            placeholder="Enter details about the interviewee or topic..."
-          />
+         <input  className="questionsInput" placeholder='What is this interview about?'/>
           <button className="button" onClick={generateQuestions}>Generate Interview Questions</button>
         </div>
       )}
 
       {questions && ( // Render this section only if questions are not empty
         <InterviewQuestions></InterviewQuestions>
-        // <div className="output-section">
-        //   <h2>Generated Interview Questions</h2>
-        //   <div className="questions">
-        //     <pre>{questions}</pre>
-        //   </div>
-        // </div>
       )}
-
-        {/* <Recording></Recording> */}
         <ParentComponent></ParentComponent>
       
     </div>
