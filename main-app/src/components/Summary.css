@@ -7,14 +7,7 @@
     text-align: left; /* Aligning content to the left */
 }
 
-.summary-section {
-    background-color: #505050;
-    padding: 10px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: start; /* Aligning items to start (top) */
-}
+
 
 .summary-section .section-content {
     flex-grow: 1;
@@ -42,7 +35,6 @@
     margin-bottom: 5px;
     border-radius: 4px;
 }
-
 .transcription-section {
     max-height: 100px !important;
     overflow-y: auto;

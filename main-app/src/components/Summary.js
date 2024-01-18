@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { FaSpinner } from 'react-icons/fa'; // Importing a spinner icon from react-icons
+import summaryData from './summary.json'; // Importing the JSON data
 import './Summary.css';
+import JsonDisplay from './JsonDisplay'; // Adjust the path based on your file structure
+
 
 const Summary = ({ recordings, onFetchRecordings, onSummaryGenerated }) => {
     const [showSummary, setShowSummary] = useState(false);
@@ -60,7 +63,7 @@ const Summary = ({ recordings, onFetchRecordings, onSummaryGenerated }) => {
 
             {!loading && showSummary && (
                 <>
-                     <h3>Interview Summary</h3>
+                    <h3>Interview Summary</h3>
                     <div className="recordings-section">
                         {recordings.map((recording, index) => (
                             <div key={index}>
@@ -73,6 +76,11 @@ const Summary = ({ recordings, onFetchRecordings, onSummaryGenerated }) => {
                     <h3>Transcription</h3>
                     <div className="transcription-section" style={{ maxHeight: '200px', overflowY: 'scroll' }}>
                         <p>{transcriptionText}</p>
+                    </div>
+
+                    <h3>Business Insights</h3>
+                    <div className="summary-section" style={{ maxHeight: '200px', overflowY: 'scroll' }}>
+                    <JsonDisplay data={summaryData} />
                     </div>
                 </>
             )}

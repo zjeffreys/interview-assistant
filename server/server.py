@@ -41,6 +41,25 @@ async def getInterviewQuestions(user_input: str = Form(...)):
     response_content = json.loads(completion.choices[0].message.content)
     return {"response": response_content}  # Return the parsed object
 
+@app.post("/summarize_text")
+async def summarizeText(user_input: str = Form(...)):
+    print(user_input)
+    if not user_input:
+        raise HTTPException(status_code=400, detail="User input is required")
+    
+    client = OpenAI()
+    completion = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": prompts["interviewQuestionPrompt"]},
+            {"role": "user", "content": user_input}
+        ])
+
+    # Parse the response string into a Python dictionary
+    print(completion.choices[0])
+    response_content = json.loads(completion.choices[0].message.content)
+    return {"response": response_content}  # Return the parsed object
+
 @app.post("/transcribe_audio")
 async def transcribe_audio(audio_file: UploadFile = File(...)):
     # Ensure the file is an audio file
