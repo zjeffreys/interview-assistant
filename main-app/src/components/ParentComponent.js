@@ -4,20 +4,26 @@ import Summary from './Summary';
 
 const ParentComponent = () => {
     const [recordings, setRecordings] = useState([]);
-    const [finalRecordings, setFinalRecordings] = useState([]);
+    const [summaryGenerated, setSummaryGenerated] = useState(false);
 
     const getRecordingsFromRecordingComponent = (currentRecordings) => {
         setRecordings(currentRecordings);
     };
 
-    const handleProcessRecordings = () => {
-        setFinalRecordings(recordings);
+    const handleSummaryGenerated = () => {
+        setSummaryGenerated(true);
     };
 
     return (
         <div>
-            <Recording getRecordings={getRecordingsFromRecordingComponent} />
-            <Summary recordings={finalRecordings} onFetchRecordings={handleProcessRecordings} />
+            {!summaryGenerated && (
+                <Recording getRecordings={getRecordingsFromRecordingComponent} />
+            )}
+            <Summary 
+                recordings={recordings} 
+                onFetchRecordings={() => {}} // Placeholder for any additional fetching logic if needed
+                onSummaryGenerated={handleSummaryGenerated} 
+            />
         </div>
     );
 };

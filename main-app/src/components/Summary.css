@@ -1,12 +1,10 @@
-/* Summary.css */
 .interview-summaries {
     font-family: Arial, sans-serif;
     color: #fff;
     background-color: #1a1a1a;
     padding: 20px;
     border-radius: 8px;
-    max-height: 200px; /* Maximum height set to 200px */
-    overflow-y: auto; /* Enable vertical scrolling */
+    text-align: left; /* Aligning content to the left */
 }
 
 .summary-section {
@@ -15,7 +13,7 @@
     border-radius: 8px;
     margin-bottom: 10px;
     display: flex;
-    text-align: left;
+    align-items: start; /* Aligning items to start (top) */
 }
 
 .summary-section .section-content {
@@ -24,7 +22,8 @@
 
 .summary-section h4, .summary-section h5 {
     margin: 0;
-    text-align: center;
+    /* Aligning headings to the left */
+    text-align: left; 
 }
 
 .icon {
@@ -35,8 +34,6 @@
 .summary-section ul {
     list-style-type: none;
     padding: 0;
-    max-height: 200px; /* Maximum height set for the list */
-    overflow-y: auto; /* Enable vertical scrolling for the list */
 }
 
 .summary-section ul li {
@@ -44,6 +41,15 @@
     padding: 8px;
     margin-bottom: 5px;
     border-radius: 4px;
+}
+
+.transcription-section {
+    max-height: 100px !important;
+    overflow-y: auto;
+    background-color: #505050;
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 10px;
 }
 
 .spinner {

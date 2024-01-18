@@ -1,82 +1,79 @@
-import React, { useState } from 'react';
-import { FaUserAlt, FaTasks, FaQuestionCircle, FaLightbulb, FaSpinner } from 'react-icons/fa';
+import React, { useState, useEffect } from 'react';
+import { FaSpinner } from 'react-icons/fa'; // Importing a spinner icon from react-icons
 import './Summary.css';
-import summaryData from './summary.json';
 
-const Summary = () => {
+const Summary = ({ recordings, onFetchRecordings, onSummaryGenerated }) => {
     const [showSummary, setShowSummary] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [transcriptionText, setTranscriptionText] = useState('');
 
-    const handleSummarizeClick = () => {
+    useEffect(() => {
+        onFetchRecordings();
+    }, [onFetchRecordings]);
+
+    const handleSummarizeClick = async () => {
         setLoading(true);
-        setTimeout(() => {
-            setLoading(false);
-            setShowSummary(true);
-        }, 3000); // 3 seconds delay
+        let combinedTranscription = '';
+
+        for (const recording of recordings) {
+            const formData = new FormData();
+            formData.append('audio_file', recording.data, 'recording.webm');
+
+            try {
+                const response = await fetch('http://localhost:8000/transcribe_audio', {
+                    method: 'POST',
+                    body: formData,
+                });
+                const data = await response.json();
+                combinedTranscription += data.transcript + '\n\n';
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        setTranscriptionText(combinedTranscription);
+        setShowSummary(true);
+        onSummaryGenerated();
+        setLoading(false);
     };
+
+    const isButtonDisabled = recordings.length === 0;
 
     return (
         <div className="interview-summaries">
-            <h3 style={{ textAlign: 'center' }}>Interview Summary</h3>
             {!showSummary && (
-                <button onClick={handleSummarizeClick} style={{ display: 'block', margin: '10px auto' }}>
-                    Summarize With AI
+                <button 
+                    onClick={handleSummarizeClick} 
+                    style={{ display: 'block', margin: '10px auto' }} 
+                    disabled={isButtonDisabled}
+                >
+                    Summarize Interview
                 </button>
             )}
 
-            {loading && <FaSpinner className="spinner" />}
+            {loading && (
+                <div style={{ textAlign: 'center', margin: '20px 0' }}>
+                    <FaSpinner className="spinner" />
+                    <p>Transcribing audio to text...</p>
+                </div>
+            )}
 
             {!loading && showSummary && (
                 <>
-                    <div className="summary-section">
-                        <FaUserAlt className="icon" />
-                        <div className="section-content">
-                            <h4>{summaryData.persona_summary.name}</h4>
-                            <p>Profession: {summaryData.persona_summary.profession}</p>
-                            <p>Experience: {summaryData.persona_summary.experience}</p>
-                        </div>
+                     <h3>Interview Summary</h3>
+                    <div className="recordings-section">
+                        {recordings.map((recording, index) => (
+                            <div key={index}>
+                                <strong>Time:</strong> {recording.datetime} <br />
+                                <audio controls src={URL.createObjectURL(recording.data)} type="audio/webm" />
+                            </div>
+                        ))}
                     </div>
 
-                    <div className="summary-section">
-                        <FaTasks className="icon" />
-                        <div className="section-content">
-                            <h5>Main Responsibilities</h5>
-                            <ul>
-                                {summaryData.persona_summary.responsibilities.map((item, index) => (
-                                    <li key={index}>{item}</li>
-                                ))}
-                            </ul>
-                        </div>
+                    <h3>Transcription</h3>
+                    <div className="transcription-section" style={{ maxHeight: '200px', overflowY: 'scroll' }}>
+                        <p>{transcriptionText}</p>
                     </div>
-
-                    <div className="summary-section">
-                        <FaQuestionCircle className="icon" />
-                        <div className="section-content">
-                            <h5>Challenges</h5>
-                            <ul>
-                                {summaryData.customer_insights.challenges.map((challenge, index) => (
-                                    <li key={index}>{challenge}</li>
-                                ))}
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div className="summary-section">
-                        <FaLightbulb className="icon" />
-                        <div className="section-content">
-                            <h5>Potential AI Benefits</h5>
-                            <ul>
-                                {summaryData.customer_insights.potential_ai_benefits.map((benefit, index) => (
-                                    <li key={index}>{benefit}</li>
-                                ))}
-                            </ul>
-                        </div>
-                    </div>
-
-                    <p style={{ textAlign: 'center' }}><strong>Attitude Towards Innovation:</strong> {summaryData.customer_insights.attitude_towards_innovation}</p>
-                    <button>Email Results</button>
-                    <button>Save</button>
-
                 </>
             )}
         </div>
