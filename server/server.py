@@ -5,17 +5,26 @@ from fastapi import FastAPI, File, UploadFile, HTTPException, Form
 from openai import OpenAI
 import json  # Import json module
 from prompts import prompts
+from fastapi.middleware.cors import CORSMiddleware
+
 
 load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")
 app = FastAPI()
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
 @app.get("/")
 async def ping():
     return {"message": "pinged server successfully"}
 
 @app.post("/getInterviewQuestions")
 async def getInterviewQuestions(user_input: str = Form(...)):
+    print(user_input)
     if not user_input:
         raise HTTPException(status_code=400, detail="User input is required")
     

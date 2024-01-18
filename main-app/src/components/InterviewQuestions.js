@@ -1,45 +1,122 @@
 import React, { useState, useEffect } from 'react';
-import interviewData from './testing.json'; // Adjust the path as needed
-import './InterviewQuestions.css'
+import ReactSwitch from 'react-switch';
+import interviewData from './testing.json'; // Ensure this has the correct structure
+import './InterviewQuestions.css';
 
 const InterviewQuestions = () => {
-  const questions = interviewData.interview_questions.map(q => q.question);
-  const [questionIndex, setQuestionIndex] = useState(0);
-  const [text, setText] = useState('');
-  const [isTypingComplete, setIsTypingComplete] = useState(false);
+  const [interviewInfo, setInterviewInfo] = useState('');
+  const [selectedOption, setSelectedOption] = useState('');
+  const [questions, setQuestions] = useState([]);
+  const [showInput, setShowInput] = useState(false);
+  const [displayedQuestions, setDisplayedQuestions] = useState([]);
+  const [typingIndex, setTypingIndex] = useState(0);
 
-  function type() {
-    if (!isTypingComplete) {
-      const currentQuestion = questions[questionIndex];
-      setText(current => current + currentQuestion.charAt(current.length));
+  const handleInputChange = (event) => {
+    setInterviewInfo(event.target.value);
+  };
 
-      if (text === currentQuestion) {
-        if (questionIndex < questions.length - 1) {
-          setQuestionIndex(questionIndex + 1);
-          setText('');
+  const handleSelectChange = (event) => {
+    setSelectedOption(event.target.value);
+  };
+
+  const generateQuestions = async () => {
+    console.log('generating questions');
+    let newQuestions;
+    if (showInput) {
+      try {
+        const formData = new URLSearchParams();
+        formData.append('user_input', interviewInfo);
+
+        const response = await fetch('http://localhost:8000/getInterviewQuestions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: formData,
+        });
+
+        const data = await response.json();
+        if (data && data.response && data.response.interview_questions) {
+          console.log(data.response);
+          newQuestions = data.response.interview_questions.map(q => q.question);
         } else {
-          setIsTypingComplete(true);
+          newQuestions = [];
+          console.error('Invalid response format');
         }
+      } catch (error) {
+        console.error('Error fetching questions:', error);
+        newQuestions = [];
       }
+    } else {
+      newQuestions = interviewData.response.interview_questions.map(q => q.question);
     }
-  }
+
+    setQuestions(newQuestions);
+    setDisplayedQuestions([]);
+    setTypingIndex(0);
+  };
 
   useEffect(() => {
-    if (!isTypingComplete) {
-      const timer = setTimeout(type, 20); // Speed up the typing effect
+    if (typingIndex < questions.length) {
+      const timer = setTimeout(() => {
+        setDisplayedQuestions(displayedQuestions => [...displayedQuestions, questions[typingIndex]]);
+        setTypingIndex(typingIndex + 1);
+      }, 500); // Adjust time as needed for typing speed
       return () => clearTimeout(timer);
     }
-  }, [text, questionIndex, isTypingComplete]);
+  }, [typingIndex, questions]);
 
   return (
     <div className="interview-questions-container">
-      <h2>Intelligent Interview Questions</h2>
-      <p>Here are is questions for a 20 minute interview. This is intended to aid you in asking effective open-ended questions.</p>
-        <div className='questions-container'>
-        {questions.slice(0, questionIndex + 1).map((question, index) => (
-            <p key={index} className="question">{index === questionIndex ? text : question}</p>
-        ))}
+      <div className="input-section">
+        <div>
+          <h2>Craft Interview Questions</h2>
+          <p>Tell me about your interview goals and I'll help you draft effective interview questions.</p>
+
+          <label className="toggle-switch">
+            <ReactSwitch 
+              checked={showInput}
+              onChange={setShowInput}
+              onColor="#86d3ff"
+              onHandleColor="#2693e6"
+              handleDiameter={30}
+              uncheckedIcon={false}
+              checkedIcon={false}
+              boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+              activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+              height={20}
+              width={48}
+            />
+            <span>{showInput ? ' AI On' : ' AI Off'}</span>
+          </label>
+          <select value={selectedOption} onChange={handleSelectChange}>
+                <option value="">Choose Interview Type</option>
+                <option value="option1">Problem Solution Fit</option>
+                <option value="option2">Product Feature</option>
+                <option value="option3">Other</option>
+                {/* Add more options as needed */}
+              </select>
+
+          {showInput && (
+            <>
+              
+              <input
+                className="questionsInput"
+                placeholder='What is this interview about?'
+                value={interviewInfo}
+                onChange={handleInputChange}
+              />
+            </>
+          )}
         </div>
+        <button className="button" onClick={generateQuestions}>Generate Interview Questions</button>
+      </div>
+
+      <div className='questions-container'>
+        {displayedQuestions.map((question, index) => (
+          <p key={index} className="question">{question}</p>
+        ))}
+      </div>
     </div>
   );
 };

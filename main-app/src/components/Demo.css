@@ -6,7 +6,7 @@
 }
 
 
-.input-section, .output-section, .recording-section {
+/* .input-section, .output-section, .recording-section {
   border-radius: 10px;
   text-align: left;
   padding: 10px;
@@ -16,7 +16,7 @@
 }
 .input-section{
   background-color: #1a1a1a;
-}
+} */
 
 /* Ensure all text elements are easily readable */
 .demo-container h2, .demo-container h3, .demo-container p {
@@ -37,8 +37,9 @@
   box-sizing: border-box; /* Include padding and border in the element's width and height */
 }
 .demo-container input{
-  background-color: white;
-  margin-bottom: 40px;
+  background-color: rgb(255, 255, 255);
+  color: rgba(0, 0, 0, 0.8);
+  /* margin-bottom: 40px; */
 }
 
 
