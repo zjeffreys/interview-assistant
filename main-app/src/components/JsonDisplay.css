@@ -1,14 +1,22 @@
 /* jsondisplay.css */
 
 .json-display-container {
- 
-  overflow-x: auto; /* Horizontal scrollbar if needed */
-  overflow-y: auto;
-  height: 200px;
+  overflow-x: auto; /* Horizontal scrolling if needed */
+  overflow-y: auto; /* Vertical scrolling if needed */
+  height: 100px;
+
+  /* Hide scrollbar for Webkit, Edge, and IE */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+
+  /* Webkit browsers */
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 pre {
-  
+  margin: 0;
   overflow-x: auto; /* Add horizontal scroll if needed */
   white-space: pre-wrap; /* Allows text to wrap */
 }

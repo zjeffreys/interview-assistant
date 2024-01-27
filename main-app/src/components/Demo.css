@@ -1,69 +1,19 @@
 .demo-container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  grid-template-columns: 1fr 1fr; /* default to two columns */
   padding: 20px;
 }
 
-
-/* .input-section, .output-section, .recording-section {
-  border-radius: 10px;
-  text-align: left;
-  padding: 10px;
-  background-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-
-}
-.input-section{
-  background-color: #1a1a1a;
-} */
-
-/* Ensure all text elements are easily readable */
-.demo-container h2, .demo-container h3, .demo-container p {
-  color: #fff;
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .demo-container {
+    grid-template-columns: 1fr; /* switch to one column on smaller screens */
+  }
 }
 
-/* Full width for inputs, selects, and buttons */
 .demo-container input, .demo-container select, .demo-container button {
   margin-bottom: 5px;
   width: 100%;
   padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #282c34;
-  background-color: rgb(40, 44, 52);
-  color: white;
-  font-size: 1em;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  box-sizing: border-box; /* Include padding and border in the element's width and height */
-}
-.demo-container input{
-  background-color: rgb(255, 255, 255);
-  color: rgba(0, 0, 0, 0.8);
-  /* margin-bottom: 40px; */
-}
-
-
-.demo-container input::placeholder, .demo-container select::placeholder {
-  color: #bbb;
-}
-
-.demo-container input:focus, .demo-container select:focus {
-  outline: none;
-  border-color: #004e92;
-}
-
-.demo-container .button:hover {
-  background-color: #3e4451;
-}
-
-/* Responsive design adjustments */
-@media (max-width: 768px) {
-  .demo-container {
-      grid-template-columns: 1fr;
-  }
-
-  /* Adjust font size for smaller screens if needed */
-  .demo-container h2, .demo-container h3, .demo-container p {
-      font-size: smaller;
-  }
+  box-sizing: border-box;
 }

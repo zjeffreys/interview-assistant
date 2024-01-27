@@ -8,7 +8,7 @@ const Recording = ({ getRecordings }) => {
     const [localRecordings, setLocalRecordings] = useState([]);
     const [demoMode, setDemoMode] = useState(false);
     const [selectedDemoRecording, setSelectedDemoRecording] = useState("");
-    const demoRecordings = ['demo1.mp3']; // List of demo recordings
+    const demoRecordings = ['club-owner-interview.mp3']; // List of demo recordings
     //const demoRecordings = ['demo1.mp3', 'demo2.mp3', 'demo3.mp3']; // List of demo recordings
 
 
@@ -30,7 +30,8 @@ const Recording = ({ getRecordings }) => {
         const blob = await response.blob();
         const recording = {
             datetime: new Date().toLocaleString(),
-            data: blob
+            data: blob, 
+            fileName: file // Storing the filename
         };
         setLocalRecordings(prev => [...prev, recording]);
     };

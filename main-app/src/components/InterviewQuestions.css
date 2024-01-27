@@ -1,13 +1,6 @@
 .interview-questions-container {
-  /* width: 90%;
-  max-width: 90%; */
-  /* margin: auto; */
   text-align: left;
   padding: 10px;
-  background-color: #1a1a1a; /* Matching the dark theme */
-  color: #fff; /* Ensuring text is readable */
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .questions-container {
@@ -26,12 +19,9 @@
 
 .question {
   text-align: left;
-  width: 90%;
-  max-width: 90%;
-  color: white; /* Changed for better visibility */
-  background-color: rgba(40, 44, 52, 1); /* Matching the input background */
+  width: 100%;
+  max-width: 100%;
   padding: 10px;
-  border-radius: 6px;
   margin-bottom: 10px; /* Uncommented for spacing between questions */
 }
 

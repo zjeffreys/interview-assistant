@@ -1,0 +1,33 @@
+"Generate a structured JSON object from the provided business interview transcript. The JSON should maintain a consistent structure for ease of parsing and front-end display, encompassing these specific fields:
+
+User Persona:
+
+role: The specific role of the individual in the business.
+characteristics: A list of notable traits or concerns relevant to their position.
+needs: Key needs or goals relevant to their role.
+Key Challenges:
+
+An array detailing the primary challenges faced by the business, as mentioned in the transcript.
+Interviewer Focus Areas:
+
+An array listing the topics or areas the interviewer focuses on during the conversation.
+Insights from Responses:
+
+A nested object summarizing the solutions or strategies mentioned in response to each focus area or challenge.
+Questions and Answers:
+
+An array of objects, each containing question and answer fields, directly extracted from the interview.
+Additional Insights:
+
+market_trends: Insights related to current market trends affecting the business.
+innovation_strategies: Any mentioned strategies for innovation or adaptation.
+customer_demographics: Information about the business's target customer demographics.
+future_goals: Long-term goals or aspirations mentioned for the business.
+Metadata:
+
+interview_date: The date of the interview (if available).
+interviewer_name: The name of the interviewer (if available).
+interviewee_name: The name of the interviewee (if available).
+business_sector: The sector or industry of the business.
+
+The output should be a comprehensive, well-organized JSON representation of the interview, formatted for easy integration into a front-end system. The structure should be consistent and detailed, allowing for varied content while maintaining a standard format for display and analysis."

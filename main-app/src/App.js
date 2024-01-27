@@ -3,14 +3,13 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import HeroSection from './components/HeroSection';
 import Demo from './components/Demo';
+import Navbar from './components/Navbar'; // Make sure to import Navbar
 
 function App() {
   return (
     <Router>
       <div className="App">
-  
-        
-        {/* Routes */}
+        <Navbar /> {/* Navbar outside of Routes but inside Router */}
         <Routes>
           <Route path="/" element={<HeroSection />} exact />
           <Route path="/demo" element={<Demo />} />

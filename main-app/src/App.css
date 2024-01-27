@@ -1,14 +1,21 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Kalam&family=Mallanna&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 .App {
   text-align: center;
-  background: linear-gradient(to bottom, #000428, #004e92);
-  /* background-color: black; */
-  min-height: 100vh;
+  /* background: linear-gradient(to bottom, #000428, #004e92); */
+  /* background-color: #7ac8ff; */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: white;
-  font-family: 'Arial', sans-serif;
+  font-family: 'Montserrat', sans-serif;
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+p, h2 {
+  margin:0;
+
 }
 
 .hero-section, .content-section {
@@ -31,8 +38,6 @@
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
-  background-color: #282c34;
-  color: white;
   font-size: 1em;
   cursor: pointer;
 }
@@ -48,37 +53,14 @@
 
 .summary-section, .customer-management-section {
   /* width: 80%; */
-  margin-top: 30px;
-  padding: 20px;
+
   border-radius: 10px;
   background-color: rgba(255, 255, 255, 0.1);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 audio { 
-  margin-top: 20px;
-  margin-bottom: 20px;
-  border-radius: 5px;
-}
-textarea {
-  width: 100%; /* Adjust width as needed */
-  height: 150px; /* Adjust height as needed */
-  padding: 10px;
-  margin-bottom: 20px;
-  border: 1px solid #282c34; /* Border color similar to button background */
-  border-radius: 5px; /* Rounded corners */
-  background-color: rgb(255, 255, 255); /* Translucent white background */
-  font-family: 'Arial', sans-serif; /* Consistent font style */
-  font-size: 1em;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Box shadow similar to other sections */
-  resize: vertical; /* Allow vertical resizing only */
+  margin-top: 5px;
 }
 
-textarea::placeholder {
-  color: #bbb; /* Lighter color for placeholder text */
-}
 
-textarea:focus {
-  outline: none; /* Remove default focus outline */
-  border: 1px solid #004e92; /* Highlight border color on focus */
-}
