@@ -25,7 +25,7 @@ const Summary = ({ recordings, onFetchRecordings, onSummaryGenerated }) => {
             formData.append('audio_file', recording.data, recording.fileName || 'recording.webm');
             setFileName(recording.fileName || 'recording.webm')
             try {
-                const response = await fetch('http://localhost:8000/transcribe_audio', {
+                const response = await fetch('https://nv2lio7ckbucjkeujfc4bn7ufm0zoptl.lambda-url.us-west-2.on.aws/transcribe_audio', {
                     method: 'POST',
                     body: formData,
                 });

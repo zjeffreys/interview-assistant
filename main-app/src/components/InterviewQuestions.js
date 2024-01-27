@@ -26,8 +26,8 @@ const InterviewQuestions = () => {
       try {
         const formData = new URLSearchParams();
         formData.append('user_input', interviewInfo);
-
-        const response = await fetch('http://localhost:8000/getInterviewQuestions', {
+        
+        const response = await fetch('https://nv2lio7ckbucjkeujfc4bn7ufm0zoptl.lambda-url.us-west-2.on.aws/getInterviewQuestions', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',

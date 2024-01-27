@@ -14,7 +14,7 @@ const JsonDisplay = ({ filename, text }) => {
       formData.append('filename', filename);
       formData.append('transcribed_text', text);
 
-      const response = await fetch('http://localhost:8000/summarize_text_to_json', {
+      const response = await fetch('https://nv2lio7ckbucjkeujfc4bn7ufm0zoptl.lambda-url.us-west-2.on.aws/summarize_text_to_json', {
         method: 'POST',
         body: formData
       });
