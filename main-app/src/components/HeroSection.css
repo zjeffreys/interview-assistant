@@ -1,47 +1,64 @@
 .hero-section {
-    /* Add any existing styles and the following */
-    margin-top: 30px; /* Adds margin at the top */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.left-column, .right-column {
+  width: 50%;
+  padding: 20px;
+  box-sizing: border-box; /* Include padding in width */
+}
+
+.left-column {
+  color: white;
+}
+
+.gradient-text {
+  background: linear-gradient(45deg, #1e90ff, #ff1493);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subheader {
+  font-size: 1.2em;
+  margin-top: 20px;
+}
+
+.try-now-button {
+  background: linear-gradient(45deg, #1e90ff, #ff1493);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 9999px; /* Rounded pill shape */
+  cursor: pointer;
+  margin-top: 20px;
+  font-size: 1em;
+  -webkit-transition: background-color 0.3s;
+  transition: background-color 0.3s;
+}
+
+.small-text {
+  font-size: 0.8em;
+  margin-top: 5px;
+}
+
+.faded-image {
+  width: 100%;
+  height: auto;
+  mask-image: radial-gradient(white, transparent);
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    flex-direction: column;
+    align-items: start;
   }
-  
-  .content-section {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    margin-top: 20px; /* Adds margin at the top of the content section */
+
+  .left-column, .right-column {
+    width: 100%;
   }
-  
-  .feature {
-    padding: 20px;
-    text-align: center;
-    box-sizing: border-box;
-    width: 80%; /* Reduced width on larger screens */
-    margin: 0 auto; /* Center feature blocks */
-    max-width: 400px; /* Maximum width of feature blocks */
-  }
-  
-  .feature-icon {
-    /* No changes needed */
-  }
-  
-  .feature-title {
-    /* No changes needed */
-  }
-  
-  /* Responsive design adjustments */
-  @media (max-width: 1024px) {
-    .feature {
-      width: 100%; /* Full width on smaller screens */
-    }
-  }
-  
-  @media (max-width: 768px) {
-    .content-section {
-      flex-direction: column;
-    }
-  
-    .feature {
-      margin-bottom: 20px;
-    }
-  }
-  
+
+  /* Add additional mobile-specific styles as needed */
+}

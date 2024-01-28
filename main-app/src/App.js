@@ -4,6 +4,7 @@ import './App.css';
 import HeroSection from './components/HeroSection';
 import Demo from './components/Demo';
 import Navbar from './components/Navbar'; // Make sure to import Navbar
+import Footer from './components/Footer';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/demo" element={<Demo />} />
           {/* Add other routes as needed */}
         </Routes>
+        <Footer/>
       </div>
     </Router>
   );
