@@ -131,7 +131,7 @@ const Recording = ({ getRecordings }) => {
                     <FaMicrophone />
                     <span>{isRecording ? 'Stop' : 'Record'}</span>
                 </button>
-                <input type="file" accept="audio/*" onChange={handleFileUpload} hidden id="audio-upload" />
+                <input type="file" accept="audio/*,audio/mp4,audio/x-m4a" onChange={handleFileUpload} hidden id="audio-upload" />
                 <label htmlFor="audio-upload" className="audio-control-btn">
                     <FaUpload />
                     <span>Upload</span>
