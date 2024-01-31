@@ -1,21 +1,23 @@
 import React, { useState } from 'react';
 import Recording from './Recording';
 import Summary from './Summary';
+import './ParentComponent.css';
 
 const ParentComponent = () => {
     const [recordings, setRecordings] = useState([]);
     const [summaryGenerated, setSummaryGenerated] = useState(false);
 
-    const getRecordingsFromRecordingComponent = (currentRecordings) => {
-        setRecordings(currentRecordings);
+    const getRecordingsFromRecordingComponent = (recordingData) => {
+        setRecordings(recordingData);
     };
 
-    const handleSummaryGenerated = () => {
+    const handleSummaryGenerated = (summaryData) => {
+        // Handle summary generation logic
         setSummaryGenerated(true);
     };
 
     return (
-        <div>
+        <div className='parentContainer'>
             {!summaryGenerated && (
                 <Recording getRecordings={getRecordingsFromRecordingComponent} />
             )}

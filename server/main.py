@@ -6,6 +6,8 @@ from openai import OpenAI
 import json  # Import json module
 from prompts import prompts
 from fastapi.middleware.cors import CORSMiddleware
+from mangum import Mangum
+import shutil 
 
 
 load_dotenv()
@@ -18,6 +20,7 @@ app.add_middleware(
     allow_methods=["*"],  # Allows all methods
     allow_headers=["*"],  # Allows all headers
 )
+
 @app.get("/")
 async def ping():
     return {"message": "pinged server successfully"}
@@ -42,14 +45,7 @@ async def getInterviewQuestions(user_input: str = Form(...)):
     return {"response": response_content}  # Return the parsed object
 
 @app.post("/summarize_text_to_json")
-async def summarizeText(filename: str = Form(...), transcribed_text: str = Form(...)):
-    # if(filename == "club-owner-interview.mp3"):      
-    #     print("demo pinged", filename)
-    #     file_path = 'club_owner_insights.json'
-    #     with open(file_path, 'r') as file:
-    #         data = json.load(file)
-    #         return {"response": data } 
-
+async def summarizeText(transcribed_text: str = Form(...)):
     client = OpenAI()
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo",
@@ -65,35 +61,40 @@ async def summarizeText(filename: str = Form(...), transcribed_text: str = Form(
 
 @app.post("/transcribe_audio")
 async def transcribe_audio(audio_file: UploadFile = File(...)):
-    # fix this later, right now the demos content type is html/txt, while the real version is a blob. 
-    if(audio_file.filename == 'club-owner-interview.mp3'):
-        return {"transcript": get_transcript_or_default(audio_file.filename)}
-   
+    print("TEST 1:")
+    print(audio_file)
     if not audio_file.content_type.startswith('audio/'):
         raise HTTPException(status_code=400, detail="Invalid file type. Please upload an audio file.")
-    
+
     try:
-        # Save the audio file temporarily
-        temp_file_path = f"temp_{audio_file.filename}"
-        with open(temp_file_path, 'wb') as buffer:
-            buffer.write(await audio_file.read())
-        
-        with open(temp_file_path, 'rb') as file:
-            client = OpenAI()
-            transcript = client.audio.transcriptions.create(
+        # Save the uploaded file to the /tmp directory
+        temp_file_path = f"/tmp/{audio_file.filename}"
+        with open(temp_file_path, "wb") as buffer:
+            print("found file")
+            shutil.copyfileobj(audio_file.file, buffer)
+        # Initialize OpenAI client
+        client = OpenAI()
+
+        # Process the audio file with the API
+        print("TESTING 2:", temp_file_path)
+        with open(temp_file_path, "rb") as file:
+            print("TESTING 2:", file)
+            transcript_response = client.audio.transcriptions.create(
                 model="whisper-1", 
                 file=file, 
                 response_format="text"
             )
 
-        # Remove the temporary file after processing
+        # Extract transcript from response
+        # transcript = transcript_response.get("transcript", "No transcript available")
+
+        # Clean up: Remove the temporary file
         os.remove(temp_file_path)
 
-        return {"transcript": transcript}
+        return {"transcript": transcript_response or "Error transcribing audio to text"}
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
 
 # Utils
 def get_transcript_or_default(filename):
@@ -109,6 +110,9 @@ def get_transcript_or_default(filename):
     else:
         return f"The server received a weird filename: {filename}"
 
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+handler = Mangum(app)
+
+
+# if __name__ == "__main__":
+#     import uvicorn
+#     uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -3,6 +3,7 @@ import { FaSpinner } from 'react-icons/fa'; // Importing a spinner icon from rea
 import './Summary.css';
 import JsonDisplay from './JsonDisplay'; // Adjust the path based on your file structure
 
+// const response = await fetch('https://nv2lio7ckbucjkeujfc4bn7ufm0zoptl.lambda-url.us-west-2.on.aws/transcribe_audio', {
 
 const Summary = ({ recordings, onFetchRecordings, onSummaryGenerated }) => {
     const [showSummary, setShowSummary] = useState(false);
@@ -21,26 +22,38 @@ const Summary = ({ recordings, onFetchRecordings, onSummaryGenerated }) => {
 
         for (const recording of recordings) {
             const formData = new FormData();
-            // formData.append('audio_file', recording.data, 'recording.webm');
-            formData.append('audio_file', recording.data, recording.fileName || 'recording.webm');
-            setFileName(recording.fileName || 'recording.webm')
+            formData.append('audio_file', recording.data, recording.filename);
+
             try {
-                const response = await fetch('https://nv2lio7ckbucjkeujfc4bn7ufm0zoptl.lambda-url.us-west-2.on.aws/transcribe_audio', {
+                const response = await fetch('http://localhost:8000/transcribe_audio', {
                     method: 'POST',
                     body: formData,
                 });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
                 const data = await response.json();
-                combinedTranscription += data.transcript + '\n\n';
+
+                if (data.transcript) {
+                    combinedTranscription += `${data.transcript}\n\n`;
+                    setFileName(recording.filename); // Update filename for each recording
+                } else {
+                    console.error('No transcript received for:', recording.filename);
+                }
             } catch (error) {
-                console.error('Error:', error);
+                console.error('Error during transcription:', error);
             }
         }
+
         setTranscriptionText(combinedTranscription);
         setShowSummary(true);
         onSummaryGenerated();
         setLoading(false);
     };
-
+    
+    
     const isButtonDisabled = recordings.length === 0;
 
     return (
@@ -80,7 +93,7 @@ const Summary = ({ recordings, onFetchRecordings, onSummaryGenerated }) => {
                     </div>
 
                     <h3>Business Insights</h3>
-                    <div className="summary-section" style={{ maxHeight: '200px', overflowY: 'scroll' }}>
+                    <div className="summary-section" >
                     <JsonDisplay filename={filename} text={transcriptionText} />
                     </div>
                 </>

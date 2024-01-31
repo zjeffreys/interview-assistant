@@ -1,22 +1,67 @@
-/* jsondisplay.css */
-
 .json-display-container {
-  overflow-x: auto; /* Horizontal scrolling if needed */
-  overflow-y: auto; /* Vertical scrolling if needed */
-  height: 100px;
-
-  /* Hide scrollbar for Webkit, Edge, and IE */
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-
-  /* Webkit browsers */
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #f4f4f4;
+  border-radius: 4px;
+  max-height: 400px;
+  overflow: auto;
 }
 
-pre {
-  margin: 0;
-  overflow-x: auto; /* Add horizontal scroll if needed */
-  white-space: pre-wrap; /* Allows text to wrap */
+.json-content {
+  font-family: 'Courier New', monospace;
+  color: #333;
 }
+
+.collapsible {
+  margin-bottom: 5px;
+}
+
+.collapsible-label {
+  cursor: pointer;
+  user-select: none;
+  padding-left: 10px;
+  display: flex;
+  align-items: center;
+  font-size: 1em;
+}
+
+.collapsible-label strong {
+  margin-left: 5px;
+}
+
+.collapsible-content {
+  padding-left: 20px;
+  border-left: 2px solid #ddd;
+}
+
+.json-entry {
+  margin-bottom: 5px;
+}
+
+.json-value {
+  color: #1a1a1a;
+}
+
+.spinner-overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.spinner {
+  margin-right: 10px;
+  animation: spin 1s linear infinite;
+}
+
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+

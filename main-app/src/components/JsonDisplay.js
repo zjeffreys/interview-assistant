@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import JSONPretty from 'react-json-pretty';
-import 'react-json-pretty/themes/adventure_time.css';
+import { FaSpinner, FaCaretRight, FaCaretDown } from 'react-icons/fa';
 import './JsonDisplay.css'; // Ensure this path is correct
 
 const JsonDisplay = ({ filename, text }) => {
@@ -32,14 +31,52 @@ const JsonDisplay = ({ filename, text }) => {
     }
   };
 
+  const CollapsibleSection = ({ label, children }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    return (
+      <div className="collapsible">
+        <div className="collapsible-label" onClick={() => setIsOpen(!isOpen)}>
+          {isOpen ? <FaCaretDown /> : <FaCaretRight />} <strong>{label}</strong>
+        </div>
+        {isOpen && <div className="collapsible-content">{children}</div>}
+      </div>
+    );
+  };
+
+  const renderJson = (data, label = 'root') => {
+    if (label === 'root' && data.response) {
+      return renderJson(data.response, 'response');
+    }
+    if (typeof data === 'object' && data !== null) {
+      const content = Object.entries(data).map(([key, value], index) => (
+        <div key={index} className="json-entry">
+          {renderJson(value, key)}
+        </div>
+      ));
+
+      return (
+        <CollapsibleSection label={label}>
+          {content}
+        </CollapsibleSection>
+      );
+    }
+    return <span className="json-value">{JSON.stringify(data)}</span>;
+  };
+
   return (
     <div className="json-display-container">
       {text && !jsonData && (
-        <button onClick={fetchData} disabled={isLoading}>
-          {isLoading ? 'Loading...' : 'Summarize Text'}
-        </button>
+        <>
+          <button onClick={fetchData}>
+            {isLoading ? <><FaSpinner className="spinner" /> Loading...</> : 'Summarize Text'}
+          </button>
+        </>
       )}
-      {jsonData && <JSONPretty className="json-pre" id="json-pretty" data={jsonData}></JSONPretty>}
+      {jsonData && (
+        <div className="json-content">
+          {renderJson(jsonData)}
+        </div>
+      )}
     </div>
   );
 };
