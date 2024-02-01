@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaSpinner } from 'react-icons/fa'; // Importing a spinner icon from react-icons
 import './Summary.css';
 import JsonDisplay from './JsonDisplay'; // Adjust the path based on your file structure
+import AWS from 'aws-sdk';
 
 // const response = await fetch('https://nv2lio7ckbucjkeujfc4bn7ufm0zoptl.lambda-url.us-west-2.on.aws/transcribe_audio', {
 
@@ -16,7 +17,11 @@ const Summary = ({ recordings, onFetchRecordings, onSummaryGenerated }) => {
         onFetchRecordings();
     }, [onFetchRecordings]);
 
+    const s3 = new AWS.S3();
+
     const handleSummarizeClick = async () => {
+        const bucket = 'my-interview-bucket'
+        console.log('handleSummarizeClick')
         setLoading(true);
         let combinedTranscription = '';
 
@@ -25,25 +30,39 @@ const Summary = ({ recordings, onFetchRecordings, onSummaryGenerated }) => {
             formData.append('audio_file', recording.data, recording.filename);
 
             try {
-                const response = await fetch('https://nv2lio7ckbucjkeujfc4bn7ufm0zoptl.lambda-url.us-west-2.on.aws/transcribe_audio', {
-                    method: 'POST',
-                    body: formData,
-                });
+                const uniqueKey = `${'raw_audio'}/${Date.now()}-${Math.random().toString(36).slice(2, 11)}-${recording.filename}`;
 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
+                const s3Response = await s3.upload({
+                    Bucket: bucket,
+                    Key: uniqueKey,
+                    Body: recording.data,
+                }).promise();
 
-                const data = await response.json();
+                console.log(s3Response)
+                if (s3Response.Location) {
+                    const formData = new FormData();
+                    formData.append('bucket', bucket); 
+                    formData.append('key', uniqueKey);
 
-                if (data.transcript) {
-                    combinedTranscription += `${data.transcript}\n\n`;
-                    setFileName(recording.filename); // Update filename for each recording
-                } else {
-                    console.error('No transcript received for:', recording.filename);
+                    // Call your REST API Lambda function here
+                    // const apiResponse = await fetch('https://nv2lio7ckbucjkeujfc4bn7ufm0zoptl.lambda-url.us-west-2.on.aws/transcribe_audio', {
+                        const apiResponse = await fetch('http://localhost:8000/transcribe_audio', {
+                        method: 'POST',
+                        body: formData, 
+                    });
+
+                    const data = await apiResponse.json(); // return transcript
+
+                    // Handle your response
+                    if (data.transcript) {
+                        combinedTranscription += `${data.transcript}\n\n`;
+                        setFileName(recording.filename);
+                    } else {
+                        console.error('No transcript received for:', recording.filename);
+                    }
                 }
             } catch (error) {
-                console.error('Error during transcription:', error);
+                console.error('Error during upload or transcription:', error);
             }
         }
 
@@ -52,7 +71,7 @@ const Summary = ({ recordings, onFetchRecordings, onSummaryGenerated }) => {
         onSummaryGenerated();
         setLoading(false);
     };
-    
+
     
     const isButtonDisabled = recordings.length === 0;
 

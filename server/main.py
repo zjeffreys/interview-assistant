@@ -1,5 +1,6 @@
 from http.client import HTTPException
 from dotenv import load_dotenv
+import boto3
 import os
 from fastapi import FastAPI, File, UploadFile, HTTPException, Form
 from openai import OpenAI
@@ -8,11 +9,15 @@ from prompts import prompts
 from fastapi.middleware.cors import CORSMiddleware
 from mangum import Mangum
 import shutil 
+from pydantic import BaseModel
+
 
 
 load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")
 app = FastAPI()
+s3_client = boto3.client('s3')
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # Allows all origins
@@ -21,13 +26,15 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
+
+
 @app.get("/")
 async def ping():
     return {"message": "pinged server successfully"}
 
 @app.post("/getInterviewQuestions")
 async def getInterviewQuestions(user_input: str = Form(...)):
-    print(user_input)
+    print(f"/getInterviewQuestions")
     if not user_input:
         raise HTTPException(status_code=400, detail="User input is required")
     
@@ -46,6 +53,7 @@ async def getInterviewQuestions(user_input: str = Form(...)):
 
 @app.post("/summarize_text_to_json")
 async def summarizeText(transcribed_text: str = Form(...)):
+    print(f"/summarize_text_to_json", transcribed_text)
     client = OpenAI()
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo",
@@ -59,41 +67,37 @@ async def summarizeText(transcribed_text: str = Form(...)):
     response_content = json.loads(completion.choices[0].message.content)
     return {"response": response_content}  # Return the parsed object
 
-@app.post("/transcribe_audio")
-async def transcribe_audio(audio_file: UploadFile = File(...)):
-    print("TEST 1:")
-    print(audio_file)
-    if not audio_file.content_type.startswith('audio/'):
-        raise HTTPException(status_code=400, detail="Invalid file type. Please upload an audio file.")
 
+
+@app.post("/transcribe_audio") # bucket, file_name
+async def transcribe_audio(bucket: str = Form(...), key: str = Form(...)):
+    print("/transcribe_audio")
+    print("Bucket:", bucket)
+    print("Key:", key)
     try:
-        # Save the uploaded file to the /tmp directory
-        temp_file_path = f"/tmp/{audio_file.filename}"
-        with open(temp_file_path, "wb") as buffer:
-            print("found file")
-            shutil.copyfileobj(audio_file.file, buffer)
-        # Initialize OpenAI client
-        client = OpenAI()
+        # Define the path for the temporary file
+        temp_file_path = f"/tmp/{key.split('/')[-1]}"
 
-        # Process the audio file with the API
-        print("TESTING 2:", temp_file_path)
+       # D ownload the file from S3 to the temporary file
+        s3_client.download_file(bucket, key, temp_file_path)
+        print(f"File downloaded from S3 to {temp_file_path}")
+
+        client = OpenAI()
         with open(temp_file_path, "rb") as file:
-            print("TESTING 2:", file)
             transcript_response = client.audio.transcriptions.create(
                 model="whisper-1", 
                 file=file, 
                 response_format="text"
             )
 
-        # Extract transcript from response
-        # transcript = transcript_response.get("transcript", "No transcript available")
-
         # Clean up: Remove the temporary file
-        os.remove(temp_file_path)
+        if os.path.exists(temp_file_path):
+            os.remove(temp_file_path)
+            print("Temporary file removed")
 
-        return {"transcript": transcript_response or "Error transcribing audio to text"}
-
+        return {"transcript": transcript_response}
     except Exception as e:
+        print(f"Error occurred: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 # Utils

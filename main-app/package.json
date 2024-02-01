@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^13.5.0",
     "amazon-cognito-identity-js": "^6.3.7",
     "aws-amplify": "^6.0.12",
+    "aws-sdk": "^2.1548.0",
     "lottie-web": "^5.12.2",
     "react": "^18.2.0",
     "react-audio-voice-recorder": "^2.2.0",
