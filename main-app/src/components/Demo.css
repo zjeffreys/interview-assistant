@@ -1,7 +1,9 @@
+p, h2{
+  margin: 10px;
+}
 .demo-container {
   display: grid;
   grid-template-columns: 1fr 1fr; /* default to two columns */
-  padding: 20px;
 }
 
 /* Responsive adjustments */
@@ -14,6 +16,5 @@
 .demo-container input, .demo-container select, .demo-container button {
   margin-bottom: 5px;
   width: 100%;
-  padding: 10px;
   box-sizing: border-box;
 }

@@ -70,8 +70,8 @@ const InterviewQuestions = () => {
     <div className="interview-questions-container">
       <div className="input-section">
         <div>
-          <h2>Craft Interview Questions</h2>
-          <p>Tell me about your interview goals and I'll help you draft effective interview questions.</p>
+          <h2>Conversation Guide</h2>
+          <p>Facilitate In-depth Discussions: Apply Guided Questions to Uncover Comprehensive Understandings</p>
 
           <label className="toggle-switch">
             <ReactSwitch 

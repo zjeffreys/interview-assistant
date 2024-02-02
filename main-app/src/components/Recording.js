@@ -129,10 +129,9 @@ const Recording = ({ getRecordings }) => {
 
     return (
         <div className="recording-section">
-            <h2>Audio Recorder and Uploader</h2>
+            <h2>Conversation Analyzer</h2>
             <p className="instructions">
-                Click the microphone to start recording. Click again to stop. Or drag and drop an audio file, or click the upload button to select a file.
-            </p>
+            Record, analyze, and extract actionable insights from conversations.            </p>
             {errorMessage && <p className="error-message">{errorMessage}</p>}
             <div className="recording-controls">
                 <button className="audio-control-btn" onClick={toggleRecording}>

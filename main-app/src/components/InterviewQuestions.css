@@ -35,7 +35,6 @@
 .interview-questions-container .toggle-container {
   display: flex;
   align-items: center;
-  margin-bottom: 15px;
 }
 
 .interview-questions-container .switch {
