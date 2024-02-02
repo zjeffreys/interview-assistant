@@ -83,7 +83,8 @@ const Recording = ({ getRecordings }) => {
                 const recording = {
                     datetime: new Date().toLocaleString(),
                     data: file,
-                    filename: file.name // Use original file name
+                    filename: file.name, // Use original file name
+                    type: file.type
                 };
                 setLocalRecordings(prev => [...prev, recording]);
                 setErrorMessage('');

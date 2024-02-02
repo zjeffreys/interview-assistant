@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { FaSpinner } from 'react-icons/fa'; // Importing a spinner icon from react-icons
+import { FaSpinner } from 'react-icons/fa';
 import './Summary.css';
-import JsonDisplay from './JsonDisplay'; // Adjust the path based on your file structure
-import AWS from 'aws-sdk';
-
-// const response = await fetch('https://nv2lio7ckbucjkeujfc4bn7ufm0zoptl.lambda-url.us-west-2.on.aws/transcribe_audio', {
+import JsonDisplay from './JsonDisplay';
 
 const Summary = ({ recordings, onFetchRecordings, onSummaryGenerated }) => {
     const [showSummary, setShowSummary] = useState(false);
@@ -12,54 +9,73 @@ const Summary = ({ recordings, onFetchRecordings, onSummaryGenerated }) => {
     const [transcriptionText, setTranscriptionText] = useState('');
     const [filename, setFileName] = useState('');
 
-
     useEffect(() => {
         onFetchRecordings();
     }, [onFetchRecordings]);
 
-    const s3 = new AWS.S3();
-
     const handleSummarizeClick = async () => {
-        const bucket = 'my-interview-bucket'
-        console.log('handleSummarizeClick')
+        console.log('handleSummarizeClick');
         setLoading(true);
         let combinedTranscription = '';
 
         for (const recording of recordings) {
-            const formData = new FormData();
-            formData.append('audio_file', recording.data, recording.filename);
-
             try {
-                const uniqueKey = `${'raw_audio'}/${Date.now()}-${Math.random().toString(36).slice(2, 11)}-${recording.filename}`;
+                // Request a pre-signed URL from your backend
+                // Generate a datetime string in 'YYYY-MM-DD_HH-mm-ss' format
+                const now = new Date();
+                const datetime = now.toISOString().replace(/:/g, '-').replace('T', '_').split('.')[0];
 
-                const s3Response = await s3.upload({
-                    Bucket: bucket,
-                    Key: uniqueKey,
-                    Body: recording.data,
-                }).promise();
+                // Create the key with a unique datetime prefix and the original filename
+                // TODO:// Add unique userid to each in case of concurrent operations
+                const key = `raw_audio/${datetime}_${recording.filename}`
+                const encodedKey = encodeURIComponent(key);
+                const encodedContentType = encodeURIComponent(recording.data.type)
+            
+               
+                const response = await fetch(`https://nv2lio7ckbucjkeujfc4bn7ufm0zoptl.lambda-url.us-west-2.on.aws/generate-presigned-url?object_name=${encodedKey}&content_type=${encodedContentType}`);
+        
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }               
+                const res = await response.json(); // Parse the JSON response
+                const url = res.signed_url
+                console.log('url', url)
 
-                console.log(s3Response)
-                if (s3Response.Location) {
-                    const formData = new FormData();
-                    formData.append('bucket', bucket); 
-                    formData.append('key', uniqueKey);
-
-                    // Call your REST API Lambda function here
-                    // const apiResponse = await fetch('https://nv2lio7ckbucjkeujfc4bn7ufm0zoptl.lambda-url.us-west-2.on.aws/transcribe_audio', {
-                        const apiResponse = await fetch('http://localhost:8000/transcribe_audio', {
-                        method: 'POST',
-                        body: formData, 
-                    });
-
-                    const data = await apiResponse.json(); // return transcript
-
-                    // Handle your response
-                    if (data.transcript) {
-                        combinedTranscription += `${data.transcript}\n\n`;
-                        setFileName(recording.filename);
-                    } else {
-                        console.error('No transcript received for:', recording.filename);
+                // Use the pre-signed URL to upload the file directly to S3            
+                await fetch(url, {
+                    method: 'PUT',
+                    body: recording.data,
+                    headers: {
+                        'Content-Type': recording.data.type, // This sets the Content-Type header to the file's MIME type
                     }
+                }).then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                }).catch(error => {
+                    console.error('Upload error:', error);
+                });
+
+                console.log('Upload successful');
+
+                const formData = new FormData();
+                formData.append('bucket', 'my-interview-bucket'); // Update with actual bucket name if different
+                formData.append('key', key);
+
+                // Call your REST API Lambda function for transcription
+                const apiResponse = await fetch('https://nv2lio7ckbucjkeujfc4bn7ufm0zoptl.lambda-url.us-west-2.on.aws/transcribe_audio', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                const data = await apiResponse.json(); // Return transcript
+
+                // Handle your response
+                if (data.transcript) {
+                    combinedTranscription += `${data.transcript}\n\n`;
+                    setFileName(recording.filename);
+                } else {
+                    console.error('No transcript received for:', recording.filename);
                 }
             } catch (error) {
                 console.error('Error during upload or transcription:', error);
@@ -72,15 +88,14 @@ const Summary = ({ recordings, onFetchRecordings, onSummaryGenerated }) => {
         setLoading(false);
     };
 
-    
     const isButtonDisabled = recordings.length === 0;
 
     return (
         <div className="interview-summaries">
             {!showSummary && (
-                <button 
-                    onClick={handleSummarizeClick} 
-                    style={{ display: 'block', margin: '10px auto' }} 
+                <button
+                    onClick={handleSummarizeClick}
+                    style={{ display: 'block', margin: '10px auto' }}
                     disabled={isButtonDisabled}
                 >
                     Summarize Interview
@@ -112,8 +127,8 @@ const Summary = ({ recordings, onFetchRecordings, onSummaryGenerated }) => {
                     </div>
 
                     <h3>Business Insights</h3>
-                    <div className="summary-section" >
-                    <JsonDisplay filename={filename} text={transcriptionText} />
+                    <div className="summary-section">
+                        <JsonDisplay filename={filename} text={transcriptionText} />
                     </div>
                 </>
             )}

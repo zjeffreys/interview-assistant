@@ -1,4 +1,6 @@
 from http.client import HTTPException
+
+from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
 import boto3
 import os
@@ -10,6 +12,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from mangum import Mangum
 import shutil 
 from pydantic import BaseModel
+import logging
+from botocore.exceptions import ClientError
 
 
 
@@ -67,8 +71,6 @@ async def summarizeText(transcribed_text: str = Form(...)):
     response_content = json.loads(completion.choices[0].message.content)
     return {"response": response_content}  # Return the parsed object
 
-
-
 @app.post("/transcribe_audio") # bucket, file_name
 async def transcribe_audio(bucket: str = Form(...), key: str = Form(...)):
     print("/transcribe_audio")
@@ -99,6 +101,41 @@ async def transcribe_audio(bucket: str = Form(...), key: str = Form(...)):
     except Exception as e:
         print(f"Error occurred: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/generate-presigned-url")
+def create_presigned_url(object_name: str, content_type, expiration: int = 3600):
+    """Generate a presigned URL to share an S3 object
+
+    :param bucket_name: string
+    :param object_name: string
+    :param expiration: Time in seconds for the presigned URL to remain valid
+    :return: Presigned URL as string. If error, returns None.
+    """
+
+    # Generate a presigned URL for the S3 object
+    bucket_name = "my-interview-bucket"
+    print("Generate a presigned URL to share an S3 object")
+    print("Test:", object_name)
+    object_name = object_name 
+    try:
+        print("content_type", content_type)
+        response = s3_client.generate_presigned_url('put_object',
+                                                    Params={'Bucket': bucket_name,
+                                                            'Key': object_name, 
+                                                            'ContentType': content_type
+                                                            
+                                                            },
+                                                    ExpiresIn=expiration)
+    except ClientError as e:
+        logging.error(e)
+        return None
+
+    # The response contains the presigned URL
+    print('response', response)
+    print(type(response))
+    return JSONResponse(content={"signed_url": response})
+
+    return response
 
 # Utils
 def get_transcript_or_default(filename):
