@@ -30,6 +30,7 @@ const Summary = ({ recordings, onFetchRecordings, onSummaryGenerated }) => {
                 const key = `raw_audio/${datetime}_${recording.filename}`
                 const encodedKey = encodeURIComponent(key);
                 const encodedContentType = encodeURIComponent(recording.data.type)
+                console.log("TEST: ", key, recording.data.type)
             
                
                 const response = await fetch(`https://nv2lio7ckbucjkeujfc4bn7ufm0zoptl.lambda-url.us-west-2.on.aws/generate-presigned-url?object_name=${encodedKey}&content_type=${encodedContentType}`);
@@ -46,7 +47,7 @@ const Summary = ({ recordings, onFetchRecordings, onSummaryGenerated }) => {
                     method: 'PUT',
                     body: recording.data,
                     headers: {
-                        'Content-Type': recording.data.type, // This sets the Content-Type header to the file's MIME type
+                        'Content-Type': recording.type, // This sets the Content-Type header to the file's MIME type
                     }
                 }).then(response => {
                     if (!response.ok) {
@@ -67,8 +68,9 @@ const Summary = ({ recordings, onFetchRecordings, onSummaryGenerated }) => {
                     method: 'POST',
                     body: formData,
                 });
-
+                
                 const data = await apiResponse.json(); // Return transcript
+                console.log(data)
 
                 // Handle your response
                 if (data.transcript) {

@@ -10,14 +10,13 @@ const Recording = ({ getRecordings }) => {
     const mediaRecorderRef = useRef(null);
     const recordingIntervalRef = useRef(null);
 
-    const handleAudioStop = (audioBlob) => {
+    const handleAudioStop = (audioBlob, mimeType) => {
         const datetime = new Date().toLocaleString();
         const recording = {
             datetime,
             data: audioBlob,
-            filename: `recording-${datetime.replace(/[\W_]+/g, '-')}.webm`, // Create a unique filename
-            type: 'audio/webm' // Adding the type property here
-
+            filename: `recording.${mimeType.split('/')[1]}`,// Use a static base name with dynamic extension
+            type: mimeType // Store the MIME type
         };
         setLocalRecordings(prev => [...prev, recording]);
         setRecordingDuration(0);
@@ -30,7 +29,10 @@ const Recording = ({ getRecordings }) => {
     const startRecording = async () => {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            mediaRecorderRef.current = new MediaRecorder(stream);
+            const mimeType = MediaRecorder.isTypeSupported('audio/mpeg') ? 'audio/mpeg' :
+                             MediaRecorder.isTypeSupported('audio/mp4') ? 'audio/mp4' :
+                             'audio/webm'; // Fallback to 'audio/webm'
+            mediaRecorderRef.current = new MediaRecorder(stream, { mimeType });
             mediaRecorderRef.current.start();
             setIsRecording(true);
             setErrorMessage('');
@@ -41,8 +43,8 @@ const Recording = ({ getRecordings }) => {
             };
 
             mediaRecorderRef.current.onstop = () => {
-                const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-                handleAudioStop(audioBlob);
+                const audioBlob = new Blob(audioChunks, { type: mimeType });
+                handleAudioStop(audioBlob, mimeType);
                 stream.getTracks().forEach(track => track.stop()); // Stop the microphone access
             };
 
@@ -71,7 +73,7 @@ const Recording = ({ getRecordings }) => {
     };
 
     const handleFileUpload = (e) => {
-        const MAX_FILE_SIZE = 25 * 1024 * 1024; // 20MB in bytes
+        const MAX_FILE_SIZE = 25 * 1024 * 1024; // 25MB in bytes
 
         const files = e.target.files;
         if (files && files[0]) {
@@ -105,7 +107,8 @@ const Recording = ({ getRecordings }) => {
                 const recording = {
                     datetime: new Date().toLocaleString(),
                     data: file,
-                    fileName: file.name // Use original file name
+                    filename: file.name, // Use original file name
+                    type: file.type
                 };
                 setLocalRecordings(prev => [...prev, recording]);
                 setErrorMessage('');
@@ -133,7 +136,8 @@ const Recording = ({ getRecordings }) => {
         <div className="recording-section">
             <h2>Conversation Analyzer</h2>
             <p className="instructions">
-            Record, analyze, and extract actionable insights from conversations.            </p>
+                Record, analyze, and extract actionable insights from conversations.
+            </p>
             {errorMessage && <p className="error-message">{errorMessage}</p>}
             <div className="recording-controls">
                 <button className="audio-control-btn" onClick={toggleRecording}>
@@ -151,7 +155,7 @@ const Recording = ({ getRecordings }) => {
                 {localRecordings.map((recording, index) => (
                     <div key={index} className="recording-row">
                         <span>{recording.datetime.split(',')[1]}</span>
-                        <audio controls src={URL.createObjectURL(recording.data)} type="audio/webm" />
+                        <audio controls src={URL.createObjectURL(recording.data)} type={recording.type} />
                         <button onClick={() => handleDeleteRecording(index)} className="delete-button">
                             <FaTrash />
                         </button>
