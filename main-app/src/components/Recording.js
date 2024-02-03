@@ -15,7 +15,9 @@ const Recording = ({ getRecordings }) => {
         const recording = {
             datetime,
             data: audioBlob,
-            filename: `recording-${datetime.replace(/[\W_]+/g, '-')}.webm` // Create a unique filename
+            filename: `recording-${datetime.replace(/[\W_]+/g, '-')}.webm`, // Create a unique filename
+            type: 'audio/webm' // Adding the type property here
+
         };
         setLocalRecordings(prev => [...prev, recording]);
         setRecordingDuration(0);
@@ -69,14 +71,14 @@ const Recording = ({ getRecordings }) => {
     };
 
     const handleFileUpload = (e) => {
-        const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB in bytes
+        const MAX_FILE_SIZE = 25 * 1024 * 1024; // 20MB in bytes
 
         const files = e.target.files;
         if (files && files[0]) {
             const file = files[0];
              // Check if file size exceeds the maximum limit
             if (file.size > MAX_FILE_SIZE) {
-                setErrorMessage('File size should not exceed 20MB.');
+                setErrorMessage('Our free plan only allows 25MB transcriptions.');
                 return;
             }
             if (/audio\/*/.test(file.type)) {
