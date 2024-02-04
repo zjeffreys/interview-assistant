@@ -9,6 +9,23 @@ const Recording = ({ getRecordings }) => {
     const [recordingDuration, setRecordingDuration] = useState(0);
     const mediaRecorderRef = useRef(null);
     const recordingIntervalRef = useRef(null);
+    const mimeTypes = [
+        'audio/webm',
+        'audio/webm; codecs=opus',
+        'audio/ogg; codecs=opus',
+        'audio/mp4',
+        'audio/aac',
+        'audio/mp3',
+        'audio/mpeg',
+        'audio/mpga',
+        'audio/m4a',
+        'audio/wav',
+
+      ];
+      
+      mimeTypes.forEach(mimeType => {
+        console.log(`${mimeType}: ${MediaRecorder.isTypeSupported(mimeType)}`);
+      });
 
     const handleAudioStop = (audioBlob, mimeType) => {
         const datetime = new Date().toLocaleString();
@@ -28,8 +45,11 @@ const Recording = ({ getRecordings }) => {
 
     const startRecording = async () => {
         try {
+            if( MediaRecorder.isTypeSupported('audio/webm') === false){
+                alert("Safari sucks, use chrome or default iphone recorder and upload. This will semi work but transcription will be limited.")
+            }
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            const mimeType = MediaRecorder.isTypeSupported('audio/mpeg') ? 'audio/mpeg' :
+            const mimeType = MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' :
                              MediaRecorder.isTypeSupported('audio/mp4') ? 'audio/mp4' :
                              'audio/webm'; // Fallback to 'audio/webm'
             mediaRecorderRef.current = new MediaRecorder(stream, { mimeType });
