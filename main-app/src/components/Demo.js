@@ -1,6 +1,5 @@
 import React from 'react';
 import './Demo.css';
-import InterviewQuestions from './InterviewQuestions';
 import ParentComponent from './ParentComponent';
 
 import { Authenticator } from '@aws-amplify/ui-react';
@@ -11,7 +10,7 @@ function Demo({ useAuthenticator = false }) { // Default to true if not provided
     <div className="demo-container">
       {/* Your existing components */}
       <ParentComponent />
-      <InterviewQuestions />
+      {/* <InterviewQuestions /> */}
      
     </div>
   );

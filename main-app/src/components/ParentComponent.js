@@ -9,6 +9,12 @@ const ParentComponent = () => {
 
     const getRecordingsFromRecordingComponent = (recordingData) => {
         setRecordings(recordingData);
+        // Assuming recordingData is an array, check if it's not empty to set summaryGenerated
+        if (recordingData.length > 0) {
+            setSummaryGenerated(true);
+        } else {
+            setSummaryGenerated(false);
+        }
     };
 
     const handleSummaryGenerated = (summaryData) => {
@@ -21,11 +27,13 @@ const ParentComponent = () => {
             {!summaryGenerated && (
                 <Recording getRecordings={getRecordingsFromRecordingComponent} />
             )}
-            <Summary 
-                recordings={recordings} 
-                onFetchRecordings={() => {}} // Placeholder for any additional fetching logic if needed
-                onSummaryGenerated={handleSummaryGenerated} 
-            />
+            {summaryGenerated && recordings.length > 0 && (
+                <Summary 
+                    recordings={recordings} 
+                    onFetchRecordings={() => {}} // Placeholder for any additional fetching logic if needed
+                    onSummaryGenerated={handleSummaryGenerated} 
+                />
+            )}
         </div>
     );
 };
