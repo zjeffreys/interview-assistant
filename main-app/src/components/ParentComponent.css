@@ -5,4 +5,10 @@
     border-radius: 10px;
     text-align: center;
     margin: 5px;
+  
+  }
+  @media (max-width: 768px) {
+    .parentContainer {
+      padding: 0;
+    }
   }

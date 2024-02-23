@@ -1,14 +1,13 @@
 .footer {
-    text-align: center;
-    padding:10px;
-    color: #333; /* Example text color */
-    position: absolute;
-    bottom: 0;
-    color: white;
-    width: 100%;
-    font-size: 10px;
-    box-sizing: border-box; /* Include padding in width calculation */
-    background-color: transparent; /* No background color */
-    border-top: 1px solid rgba(255, 255, 255, 0.5); /* White semi-transparent top border */
-  }
-  
+  text-align: center;
+  padding: 5px;
+  color: white; /* Keep your preferred text color */
+  position: fixed; /* Stick to the bottom of the viewport */
+  bottom: 0; /* Align to the bottom */
+  left: 0; /* Align to the left */
+  width: 100%; /* Ensure it spans the full width */
+  font-size: 10px; /* Your preferred font size */
+  box-sizing: border-box; /* Include padding in width calculation */
+  background-color: #333; /* Suggested background color for visibility */
+  border-top: 1px solid rgba(255, 255, 255, 0.5); /* White semi-transparent top border */
+}

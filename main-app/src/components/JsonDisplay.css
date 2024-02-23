@@ -36,13 +36,13 @@
 @media (max-width: 768px) {
   .json-display-flex {
     flex-direction: column; /* Stack elements vertically */
-    margin: 10px 0px; /* Adjust margins for smaller screens */
+    margin: 0; /* Adjust margins for smaller screens */
   }
 
   .user-profile, .json-carousel-container {
     flex: none; /* Disable flex sizing */
     width: 100%; /* Full width for smaller screens */
-    padding: 10px; /* Adjust padding for a tighter layout */
+    padding: 0px; /* Adjust padding for a tighter layout */
     text-align: center; /* Center-align content for a cohesive look */
   }
 
