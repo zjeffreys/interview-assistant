@@ -100,21 +100,21 @@ const Summary = ({ recordings, onFetchRecordings, onSummaryGenerated }) => {
 
             {!loading && showSummary && (
                 <>
-                    <h3>Interview Summary</h3>
-                    <div className="recordings-section">
+                    {/* <h3>Interview Summary</h3> */}
+                    {/* <div className="recordings-section">
                         {recordings.map((recording, index) => (
                             <div key={index}>
                                 <audio controls src={URL.createObjectURL(recording.data)} type="audio/webm" />
                             </div>
                         ))}
-                    </div>
+                    </div> */}
 
-                    <h3>Transcription</h3>
+                    {/* <h3>Transcription</h3>
                     <div className="transcription-section" style={{ maxHeight: '200px', overflowY: 'scroll' }}>
                         <p>{transcriptionText}</p>
-                    </div>
+                    </div> */}
 
-                    <h3>Business Insights</h3>
+                    {/* <h3>Business Insights</h3> */}
                     <div className="summary-section">
                         <JsonDisplay filename={filename} text={transcriptionText} />
                     </div>

@@ -1,67 +1,60 @@
-.json-display-container {
-  padding: 10px;
-  border: 1px solid #ccc;
-  background-color: #f4f4f4;
-  border-radius: 4px;
-  max-height: 400px;
-  overflow: auto;
-}
-
-.json-content {
-  font-family: 'Courier New', monospace;
-  color: #333;
-}
-
-.collapsible {
-  margin-bottom: 5px;
-}
-
-.collapsible-label {
-  cursor: pointer;
-  user-select: none;
-  padding-left: 10px;
+.json-display-flex {
+  background-color: #505050;
+  border-radius: 8px;
   display: flex;
-  align-items: center;
-  font-size: 1em;
+  align-items: stretch;
+  justify-content: space-between;
+  margin: 80px;
+  overflow: hidden;
 }
 
-.collapsible-label strong {
-  margin-left: 5px;
+.user-profile {
+  flex: 0 0 25%; /* Keep the user profile at 25% width */
+  text-align: center;
+  padding-top: 40px;
+  background-color: #303333;
 }
 
-.collapsible-content {
-  padding-left: 20px;
-  border-left: 2px solid #ddd;
+.user-profile img {
+  max-width: 200px;
+  height: auto;
+  border-radius: 50%;
 }
 
-.json-entry {
-  margin-bottom: 5px;
+.json-carousel-container {
+  padding-left: 40px;
+  flex: 1; /* Take up the remaining space */
+  text-align: left;
 }
 
-.json-value {
-  color: #1a1a1a;
+.carousel .slide {
+  text-align: left !important;
+  background-color: transparent;
 }
 
-.spinner-overlay {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  background-color: rgba(255, 255, 255, 0.8);
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+  .json-display-flex {
+    flex-direction: column; /* Stack elements vertically */
+    margin: 10px 0px; /* Adjust margins for smaller screens */
+  }
+
+  .user-profile, .json-carousel-container {
+    flex: none; /* Disable flex sizing */
+    width: 100%; /* Full width for smaller screens */
+    padding: 10px; /* Adjust padding for a tighter layout */
+    text-align: center; /* Center-align content for a cohesive look */
+  }
+
+  .user-profile {
+    padding-top: 10px; /* Less padding on top for a tighter header */
+  }
+
+  .user-profile img {
+    max-width: 150px; /* Smaller profile picture on smaller screens */
+  }
+
+  .json-carousel-container {
+    padding-left: 0; /* Remove extra padding on the left for carousel */
+  }
 }
-
-.spinner {
-  margin-right: 10px;
-  animation: spin 1s linear infinite;
-}
-
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.spinner {
-  animation: spin 1s linear infinite;
-}
-
