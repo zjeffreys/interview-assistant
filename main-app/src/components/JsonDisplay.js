@@ -139,9 +139,13 @@ const JsonDisplay = ({ filename, text }) => {
     <div className="json-display-container">
       {text && !jsonData && (
         <button onClick={fetchData}>
-          {isLoading ? <><FaSpinner className="spinner" /> Loading...</> : 'Summarize Text'}
+          {isLoading ? <><FaSpinner className="spinner" /> Loading...</> : 'Analyze Conversation'}
         </button>
       )}
+      {text && !jsonData && (
+        <p>{jsonData}</p>
+      )}
+
       {jsonData && (
         <div className="json-display-flex">
           <UserProfile role={jsonData.response["User Persona"].role} />

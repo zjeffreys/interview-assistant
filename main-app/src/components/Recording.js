@@ -63,7 +63,7 @@ const Recording = ({ getRecordings }) => {
             <p className="instructions">
                 Upload Customer Interviews |
                 Datamine Insights | 
-                Generate Marketing Content 
+                Share With Team 
             </p>
             {errorMessage && <p className="error-message">{errorMessage}</p>}
             <div className="recording-controls">

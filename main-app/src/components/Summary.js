@@ -87,7 +87,7 @@ const Summary = ({ recordings, onFetchRecordings, onSummaryGenerated }) => {
                     onClick={handleSummarizeClick}
                     style={{ display: 'block', margin: '10px auto' }}
                 >
-                    Analyze Discussion
+                    Process Audio
                 </button>
             )}
 
@@ -109,10 +109,10 @@ const Summary = ({ recordings, onFetchRecordings, onSummaryGenerated }) => {
                         ))}
                     </div> */}
 
-                    {/* <h3>Transcription</h3>
+                    <h3>Transcription</h3>
                     <div className="transcription-section" style={{ maxHeight: '200px', overflowY: 'scroll' }}>
                         <p>{transcriptionText}</p>
-                    </div> */}
+                    </div>
 
                     {/* <h3>Business Insights</h3> */}
                     <div className="summary-section">
